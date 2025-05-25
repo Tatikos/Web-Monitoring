@@ -1,9 +1,8 @@
-version: '3.8'
-
 services:
   # Demo Application
   app:
-    build: ./app
+    build:
+      context: C:\\pegke\\Stack monitoring\\monitoring-stack\\app
     ports:
       - "8080:8080"
     environment:
@@ -22,7 +21,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "/c/pegke/Stack monitoring/monitoring-stack/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -45,10 +45,12 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_DOMAIN=localhost
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards/custom:ro
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - "C:\\pegke\\Stack monitoring\\monitoring-stack\\grafana\\provisioning\\datasources\\datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml:ro"
+      - "C:\\pegke\\Stack monitoring\\monitoring-stack\\grafana\\provisioning\\dashboards\\dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml:ro"
+      - "C:\\pegke\\Stack monitoring\\monitoring-stack\\grafana\\dashboards\\:/var/lib/grafana/dashboards:ro"
     networks:
       - monitoring
     restart: unless-stopped
@@ -62,9 +64,11 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki/config.yaml:/etc/loki/local-config.yaml:ro
+      - "/c/pegke/Stack monitoring/monitoring-stack/loki/config.yaml:/etc/loki/local-config.yaml:ro"
       - loki_data:/loki
-    command: -config.file=/etc/loki/local-config.yaml
+    command: 
+      -config.file=/etc/loki/local-config.yaml
+      - "-config.expand-env=true"
     networks:
       - monitoring
     restart: unless-stopped
@@ -75,7 +79,7 @@ services:
     volumes:
       - /var/log:/var/log:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - ./loki/promtail-config.yaml:/etc/promtail/config.yml:ro
+      - "/c/pegke/Stack monitoring/monitoring-stack/loki/promtail-config.yaml:/etc/promtail/config.yml:ro"
     command: -config.file=/etc/promtail/config.yml
     networks:
       - monitoring
