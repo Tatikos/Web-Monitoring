@@ -1,79 +1,97 @@
-Monitoring Stack Demo
+# Monitoring Stack Demo
 
-A complete monitoring stack demo featuring:
+A production-ready local monitoring stack built with industry-standard open-source tools. Spin up a fully integrated observability environment — metrics, logs, and dashboards — with a single command.
 
-App: A sample Python web app exposing metrics and logs
+---
 
-Prometheus: Metrics collection and alerting
+## Stack Overview
 
-Grafana: Visualization dashboards for metrics and logs
+| Component | Role |
+|---|---|
+| **Sample Python App** | Web application exposing metrics endpoints and structured logs |
+| **Prometheus** | Metrics collection, storage, and alerting |
+| **Grafana** | Visualization dashboards for metrics and logs |
+| **Loki** | Log aggregation and query engine |
+| **Promtail** | Log shipping agent for app and system logs |
+| **Node Exporter** | Host-level system metrics (CPU, memory, disk, network) |
+| **cAdvisor** | Per-container resource usage and performance metrics |
 
-Loki: Log aggregation and querying
+---
 
-Promtail: Log shipping from app and system
+## Features
 
-Node Exporter & cAdvisor: Host and container metrics
+- **Unified observability** — correlate metrics and logs in a single Grafana interface
+- **Preconfigured dashboards** — get actionable insights immediately after startup
+- **Centralized logging** — aggregate and query logs across all services with Loki
+- **Container & host metrics** — full visibility into system and Docker resource usage
+- **One-command deployment** — Docker Compose setup requires no manual configuration
 
-Features
+---
 
-Collect and visualize app and system metrics
+## Prerequisites
 
-Centralized logging with Loki and Promtail
+- [Docker](https://www.docker.com/products/docker-desktop) (tested with Docker Desktop)
+- Docker Compose (included with Docker Desktop)
 
-Preconfigured Grafana dashboards for quick insights
+> **Note:** Ensure Docker Desktop is allocated sufficient resources. A minimum of **2 CPUs** and **4 GB of memory** is recommended.
 
-Docker Compose setup for easy local deployment
+---
 
-Supports real-time monitoring of your app performance and logs
+## Getting Started
 
-Getting Started
+**1. Clone the repository**
 
-Prerequisites
-Docker (tested with Docker Desktop)
-
-Docker Compose
-
-Running the Stack
-Clone this repository:
 ```bash
 git clone https://github.com/yourusername/monitoring-stack-demo.git
 cd monitoring-stack-demo
 ```
-Build and start all services:
+
+**2. Build and start all services**
+
 ```bash
 docker-compose up --build -d
 ```
-Access the dashboards
 
-Grafana: http://localhost:3000
+**3. Access the interfaces**
 
-Default user: admin
+| Service | URL | Credentials |
+|---|---|---|
+| Grafana | http://localhost:3000 | `admin` / `admin` |
+| Prometheus | http://localhost:9090 | — |
+| Loki (API) | http://localhost:3100 | — |
 
-Default password: admin
+---
 
-Prometheus: http://localhost:9090
+## Usage
 
-Loki: http://localhost:3100 (API for logs)
-Usage
+- **Grafana** — Open preconfigured dashboards to explore app metrics, system performance, and aggregated logs in real time.
+- **Loki** — Use LogQL in Grafana's Explore view to filter and query logs across all services.
+- **Prometheus** — Run PromQL queries directly or inspect scrape targets and alert rules at `/targets`.
 
-Use Grafana dashboards to explore app metrics and logs.
+---
 
-Query logs with Loki’s powerful query language.
+## Troubleshooting
 
-Monitor system metrics via Node Exporter and cAdvisor.
+**Containers fail to start**
+- Verify volume paths and bind mounts in `docker-compose.yml` match your local directory structure.
+- Ensure no port conflicts exist on `3000`, `9090`, or `3100`.
 
-Troubleshooting
+**Viewing container logs**
+```bash
+docker logs <container_name>
+```
 
-If containers fail to start, check volumes and paths in docker-compose.yml
+**Insufficient resources**
+- Open Docker Desktop → Settings → Resources and increase CPU and memory allocation.
 
-Use docker logs <container_name> to view container logs
+---
 
-Ensure Docker Desktop has sufficient resources (CPU, memory)
+## License
 
-License
+Distributed under the [MIT License](LICENSE).
 
-MIT License — see LICENSE for details.
+---
 
-Contributions
+## Contributing
 
-Contributions and suggestions are welcome! Feel free to open issues or pull requests.
+Contributions, bug reports, and feature requests are welcome. Please open an issue or submit a pull request.
